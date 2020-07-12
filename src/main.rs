@@ -1,14 +1,15 @@
+mod login;
+
 use {
+    crate::login::Credentials,
     anyhow::{Context, Result},
-    egg_mode::{auth, tweet, user},
-    serde::{Deserialize, Serialize},
-    std::io::Write,
+    egg_mode::tweet,
     structopt::StructOpt,
 };
 
 #[derive(StructOpt, Debug)]
 #[structopt(about = "Twitter likes scraper")]
-struct Arguments {
+pub struct Arguments {
     /// Twitter API key. Loaded from $CWD/api_keys.env by default.
     #[structopt(long, env = "API_KEY", hide_env_values = true)]
     api_key: String,
@@ -62,55 +63,4 @@ async fn main() -> Result<()> {
     }
 
     Ok(())
-}
-#[derive(Serialize, Deserialize, Debug)]
-struct Credentials {
-    token: auth::Token,
-    user_id: u64,
-    username: String,
-}
-
-impl Credentials {
-    async fn login(args: &Arguments) -> Result<Self> {
-        let con_token = auth::KeyPair::new(args.api_key.clone(), args.api_secret.clone());
-        let request_token = auth::request_token(&con_token, "oob").await?;
-        let auth_url = auth::authorize_url(&request_token);
-
-        println!("Visit the following URL, login, and paste the PIN provided below.\n");
-        println!("URL: {}\n", auth_url);
-        print!("PIN: ");
-        std::io::stdout().flush()?;
-
-        let mut input = String::new();
-        std::io::stdin()
-            .read_line(&mut input)
-            .context("Failed to read PIN from stdin")?;
-
-        let (token, user_id, username) = auth::access_token(con_token, &request_token, input)
-            .await
-            .context("Failed to get access token")?;
-
-        Ok(Self {
-            token,
-            user_id,
-            username,
-        })
-    }
-
-    fn load_from_file(args: &Arguments) -> Result<Self> {
-        Ok(serde_json::from_str(&std::fs::read_to_string(
-            &args.creds_file,
-        )?)?)
-    }
-
-    fn save_to_file(&self, args: &Arguments) -> Result<()> {
-        Ok(std::fs::write(
-            &args.creds_file,
-            serde_json::to_string(self)?,
-        )?)
-    }
-
-    fn user_id(&self) -> user::UserID {
-        user::UserID::ID(self.user_id)
-    }
 }
