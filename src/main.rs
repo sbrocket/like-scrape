@@ -10,11 +10,11 @@ use {
 #[derive(StructOpt, Debug)]
 #[structopt(about = "Twitter likes scraper")]
 pub struct Arguments {
-    /// Twitter API key. Loaded from $CWD/api_keys.env by default.
+    /// Twitter API key. Loaded from $CWD/.env by default.
     #[structopt(long, env = "API_KEY", hide_env_values = true)]
     api_key: String,
 
-    /// Twitter API secret. Loaded from $CWD/api_keys.env by default.
+    /// Twitter API secret. Loaded from $CWD/.env by default.
     #[structopt(long, env = "API_SECRET", hide_env_values = true)]
     api_secret: String,
 
@@ -38,7 +38,7 @@ enum Command {
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    dotenv::from_filename("api_keys.env").ok();
+    dotenv::dotenv().ok();
     let args = Arguments::from_args();
 
     let creds = if let Command::Login = args.cmd {
