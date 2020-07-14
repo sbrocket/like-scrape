@@ -1,0 +1,2 @@
+# Disable rustfmt's weird width_heuristics hat scale individual width settings as a function of max_width
+use_small_heuristics = "Max"
