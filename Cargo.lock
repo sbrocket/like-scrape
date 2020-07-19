@@ -25,6 +25,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "85bb70cc08ec97ca5450e6eba421deeea5f172c0fc61f78b5357b2a8e8be195f"
 
 [[package]]
+name = "assert_matches"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7deb0a829ca7bcfaf5da70b073a8d128619259a7be8216a355e23f00763059e5"
+
+[[package]]
 name = "atty"
 version = "0.2.14"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -61,6 +67,12 @@ checksum = "4152116fd6e9dadb291ae18fc1ec3575ed6d84c29642d97890f4b4a3417297e4"
 dependencies = [
  "generic-array",
 ]
+
+[[package]]
+name = "byteorder"
+version = "1.3.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "08c48aae112d48ed9f069b33538ea9e3e90aa263cfa3d1c24309612b1f7472de"
 
 [[package]]
 name = "bytes"
@@ -151,6 +163,44 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn",
+]
+
+[[package]]
+name = "diesel"
+version = "1.4.5"
+source = "git+https://github.com/sbrocket/diesel?branch=1.4.x#f5bc0a85518df74524a16f12f70b72cbd61b6d76"
+dependencies = [
+ "byteorder",
+ "diesel_derives",
+ "libsqlite3-sys",
+]
+
+[[package]]
+name = "diesel"
+version = "1.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "3e2de9deab977a153492a1468d1b1c0662c1cf39e5ea87d0c060ecd59ef18d8c"
+replace = "diesel 1.4.5 (git+https://github.com/sbrocket/diesel?branch=1.4.x)"
+
+[[package]]
+name = "diesel_derives"
+version = "1.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "45f5098f628d02a7a0f68ddba586fb61e80edec3bdc1be3b921f4ceec60858d3"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
+name = "diesel_migrations"
+version = "1.4.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bf3cde8413353dc7f5d72fa8ce0b99a560a359d2c5ef1e5817ca731cd9008f4c"
+dependencies = [
+ "migrations_internals",
+ "migrations_macros",
 ]
 
 [[package]]
@@ -530,10 +580,23 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a9f8082297d534141b30c8d39e9b1773713ab50fdbe4ff30f750d063b3bfd701"
 
 [[package]]
+name = "libsqlite3-sys"
+version = "0.18.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1e704a02bcaecd4a08b93a23f6be59d0bd79cd161e0963e9499165a0a35df7bd"
+dependencies = [
+ "pkg-config",
+ "vcpkg",
+]
+
+[[package]]
 name = "like-scrape"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "assert_matches",
+ "diesel 1.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "diesel_migrations",
  "dotenv",
  "egg-mode",
  "serde",
@@ -573,6 +636,27 @@ name = "memchr"
 version = "2.3.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3728d817d99e5ac407411fa471ff9800a778d88a24685968b36824eaf4bee400"
+
+[[package]]
+name = "migrations_internals"
+version = "1.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2b4fc84e4af020b837029e017966f86a1c2d5e83e64b589963d5047525995860"
+dependencies = [
+ "diesel 1.4.5 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "migrations_macros"
+version = "1.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9753f12909fd8d923f75ae5c3258cae1ed3c8ec052e1b38c93c21a6d157f789c"
+dependencies = [
+ "migrations_internals",
+ "proc-macro2",
+ "quote",
+ "syn",
+]
 
 [[package]]
 name = "mime"

@@ -1,3 +1,4 @@
 .env
+database.db
 user_creds.json
 /target
